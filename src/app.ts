@@ -1,4 +1,5 @@
 import express, { NextFunction, Response } from 'express';
+import cors from 'cors';
 import * as leetcode from './leetCode';
 import { FetchUserDataRequest } from './types';
 import apicache from 'apicache';
@@ -20,11 +21,7 @@ let cache = apicache.middleware;
 const API_URL = process.env.LEETCODE_API_URL || 'https://leetcode.com/graphql';
 
 app.use(cache('5 minutes'));
-app.use(
-  cors({
-    origin: 'https://pranavmappoli.github.io',
-  })
-);
+app.use(cors()); //enable all CORS request
 app.use((req: express.Request, _res: Response, next: NextFunction) => {
   console.log('Requested URL:', req.originalUrl);
   next();
