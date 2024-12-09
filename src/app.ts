@@ -21,7 +21,18 @@ let cache = apicache.middleware;
 const API_URL = process.env.LEETCODE_API_URL || 'https://leetcode.com/graphql';
 
 app.use(cache('5 minutes'));
-app.use(cors()); //enable all CORS request
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Check if the origin contains the substring 'pranavmappoli'
+      if (origin && origin.includes('pranavmappoli')) {
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error('Not allowed by CORS')); // Block the request
+      }
+    },
+  })
+);
 app.use((req: express.Request, _res: Response, next: NextFunction) => {
   console.log('Requested URL:', req.originalUrl);
   next();
